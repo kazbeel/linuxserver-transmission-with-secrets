@@ -1,0 +1,27 @@
+secrets:
+  transmission_user:
+    file: ./secrets/transmission_user
+  transmission_pass:
+    file: ./secrets/transmission_pass
+
+services:
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    restart: unless-stopped
+    volumes:
+      - ./docker/apps/transmission/config:/config
+      - ./docker/apps/transmission/downloads:/downloads
+    secrets:
+      - transmission_user
+      - transmission_pass
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      USER_FILE: /run/secrets/transmission_user
+      PASS_FILE: /run/secrets/transmission_pass
+      PEERPORT: 51413
+    ports:
+      - 51413:51413
+      - 51413:51413/udp
