@@ -1,8 +1,8 @@
 secrets:
   transmission_user:
-    file: ./secrets/transmission_user
+    file: ${PWD}/secrets/transmission_user
   transmission_pass:
-    file: ./secrets/transmission_pass
+    file: ${PWD}/secrets/transmission_pass
 
 services:
   transmission:
@@ -10,8 +10,8 @@ services:
     container_name: transmission
     restart: unless-stopped
     volumes:
-      - ./docker/apps/transmission/config:/config
-      - ./docker/apps/transmission/downloads:/downloads
+      - ${PWD}/tmp/config:/config
+      - ${PWD}/tmp/downloads:/downloads
     secrets:
       - transmission_user
       - transmission_pass
@@ -19,9 +19,5 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
-      USER_FILE: /run/secrets/transmission_user
-      PASS_FILE: /run/secrets/transmission_pass
-      PEERPORT: 51413
-    ports:
-      - 51413:51413
-      - 51413:51413/udp
+      FILE__USER: /run/secrets/transmission_user
+      FILE__PASS: /run/secrets/transmission_pass
